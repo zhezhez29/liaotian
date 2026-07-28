@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>双账号自聊站</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-panel left-panel hidden" id="leftPanel">
+        <div class="panel-card">
+          <div class="panel-heading">
+            <div class="avatar avatar-violet" id="panelAvatarLeft">A</div>
+            <div>
+              <h3 id="panelNameLeft">Alice</h3>
+              <p id="panelStatusLeft">在线 · 正在创作</p>
+            </div>
+            <div class="panel-select">
+              <select id="leftAccountSelect" class="account-select" title="选择左侧账号"></select>
+            </div>
+            <button class="icon-btn" id="leftSwitchAccountBtn" title="快速切换账号">⇄</button>
+            <button class="icon-btn close-panel" data-close="left">×</button>
+            <button class="icon-btn" id="leftEditBtn" data-edit="alice">✏️</button>
+          </div>
+
+          <div class="profile-block">
+            <div class="block-title">简介</div>
+            <p id="panelBioLeft">创意设计师，热爱极简和微交互。</p>
+          </div>
+
+          <div class="profile-block">
+            <div class="block-title">朋友圈</div>
+            <div class="moments-list" id="panelMomentsLeft"></div>
+            <form class="moment-form" id="leftMomentForm" data-account="alice">
+              <textarea rows="3" placeholder="发布一条朋友圈..."></textarea>
+              <input type="file" class="moment-file-input" accept="image/*,video/*" />
+              <button type="submit">发朋友圈</button>
+            </form>
+          </div>
+        </div>
+      </aside>
+
+      <main class="chat-panel">
+        <header class="chat-header">
+          <div>
+            <p class="eyebrow">双账号自聊站</p>
+            <h2 id="roomTitle">Alice 与 Bob 的对话</h2>
+          </div>
+          <div class="header-actions">
+            <div class="current-sender">
+              <span class="label">当前发送：</span>
+              <span class="sender-name" id="currentSender">Alice</span>
+            </div>
+            <button class="pill-btn" id="switchBtn">切换发信人</button>
+            <button class="pill-btn secondary" id="themeBtn">换背景</button>
+            <button class="pill-btn secondary" id="resetBtn">清空记录</button>
+          </div>
+        </header>
+        <p class="hint">点击聊天头像即可查看对方资料和朋友圈。</p>
+
+        <section class="message-area" id="messageArea"></section>
+
+        <form class="composer" id="composer">
+          <textarea id="messageInput" rows="3" placeholder="输入消息，体验双账号自聊..."></textarea>
+          <div class="composer-attach">
+            <label class="file-upload">
+              <input type="file" id="messageFileInput" accept="image/*,video/*" />
+              <span>上传图片/视频</span>
+            </label>
+            <span class="attachment-info" id="attachmentInfo">未选择文件</span>
+          </div>
+          <button type="submit">发送</button>
+        </form>
+      </main>
+
+      <aside class="side-panel right-panel hidden" id="rightPanel">
+        <div class="panel-card">
+          <div class="panel-heading">
+            <div class="avatar avatar-green" id="panelAvatarRight">B</div>
+            <div>
+              <h3 id="panelNameRight">Bob</h3>
+              <p id="panelStatusRight">在线 · 也在观察</p>
+            </div>
+            <div class="panel-select">
+              <select id="rightAccountSelect" class="account-select" title="选择右侧账号"></select>
+            </div>
+            <button class="icon-btn" id="rightSwitchAccountBtn" title="快速切换账号">⇄</button>
+            <button class="icon-btn close-panel" data-close="right">×</button>
+            <button class="icon-btn" id="rightEditBtn" data-edit="bob">✏️</button>
+          </div>
+
+          <div class="profile-block">
+            <div class="block-title">简介</div>
+            <p id="panelBioRight">产品经理，喜欢把复杂问题讲清楚。</p>
+          </div>
+
+          <div class="profile-block">
+            <div class="block-title">朋友圈</div>
+            <div class="moments-list" id="panelMomentsRight"></div>
+            <form class="moment-form" id="rightMomentForm" data-account="bob">
+              <textarea rows="3" placeholder="发布一条朋友圈..."></textarea>
+              <input type="file" class="moment-file-input" accept="image/*,video/*" />
+              <button type="submit">发朋友圈</button>
+            </form>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+      <div class="modal">
+        <h3 id="modalTitle">编辑账号</h3>
+        <div class="form-group">
+          <label>昵称</label>
+          <input type="text" id="editName" placeholder="输入昵称" />
+        </div>
+
+        <div class="form-group">
+          <label>头像文字</label>
+          <input type="text" id="editAvatarText" placeholder="如 A、B、L" maxlength="2" />
+        </div>
+
+        <div class="form-group">
+          <label>头像图片</label>
+          <input type="file" id="editAvatarImage" accept="image/*" />
+        </div>
+
+        <div class="form-group">
+          <label>头像主题</label>
+          <div class="color-picker" id="themePicker">
+            <button class="color-option active" data-theme="violet" style="background: linear-gradient(140deg, #6366f1, #8b5cf6);"></button>
+            <button class="color-option" data-theme="green" style="background: linear-gradient(140deg, #14b8a6, #22c55e);"></button>
+            <button class="color-option" data-theme="orange" style="background: linear-gradient(140deg, #f97316, #ef4444);"></button>
+            <button class="color-option" data-theme="pink" style="background: linear-gradient(140deg, #ec4899, #8b5cf6);"></button>
+            <button class="color-option" data-theme="blue" style="background: linear-gradient(140deg, #3b82f6, #06b6d4);"></button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>简介</label>
+          <textarea id="editBio" rows="3" placeholder="输入简介"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>聊天背景</label>
+          <div class="bg-picker" id="bgPicker">
+            <button class="bg-option active" data-bg="aurora">极光</button>
+            <button class="bg-option" data-bg="sunset">日落</button>
+            <button class="bg-option" data-bg="night">夜色</button>
+            <button class="bg-option" data-bg="grid">网格</button>
+          </div>
+          <input type="text" id="editBackgroundUrl" placeholder="也可以填背景图片网址" />
+          <input type="file" id="editBackgroundFile" accept="image/*" />
+        </div>
+
+        <div class="modal-actions">
+          <button class="pill-btn secondary" id="cancelEdit" type="button">取消</button>
+          <button class="pill-btn" id="saveEdit" type="button">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
